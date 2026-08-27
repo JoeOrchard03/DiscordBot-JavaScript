@@ -1,5 +1,7 @@
 require(`dotenv`).config();
 
+const {getJoke} = require("./APIs/JokeAPI");
+
 const { Client, GatewayIntentBits } = require('discord.js'); //Imports dependencies from Discord.js, client is the connection to discord
 
 //Creates discord client
@@ -26,6 +28,11 @@ client.on("interactionCreate", async interaction =>{
     if(interaction.commandName==="ping")
     {
         await interaction.reply("Pong! 🏓");
+    }
+
+    if(interaction.commandName==="joke")
+    {
+        await interaction.reply(await getJoke());
     }
 });
 

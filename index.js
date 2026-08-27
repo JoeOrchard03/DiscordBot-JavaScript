@@ -10,9 +10,23 @@ const client = new Client({
 });
 
 //When bot is connected and ready
-client.once('ready', () => {
+client.once('clientReady', () => {
   //Log message to console to announce itself
     console.log(`Logged in as ${client.user.tag}`);
+});
+
+//Everytime discord detects a new interaction this function runs
+client.on("interactionCreate", async interaction =>{
+    //Checks if it is a slash command
+    if (!interaction.isChatInputCommand()){
+        return;
+    }
+
+    //Checks if the command is ping
+    if(interaction.commandName==="ping")
+    {
+        await interaction.reply("Pong! 🏓");
+    }
 });
 
 //Connects using bot's token

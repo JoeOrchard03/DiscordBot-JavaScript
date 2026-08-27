@@ -1,11 +1,17 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const { Client, GatewayIntentBits } = require('discord.js'); //Imports dependencies from Discord.js, client is the connection to discord
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+//Creates discord client
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds
+    ]
+});
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+//When bot is connected and ready
+client.once('ready', () => {
+  //Log message to console to announce itself
+    console.log(`Logged in as ${client.user.tag}`);
+});
+
+//Connects using bot's token
+client.login('YOUR_BOT_TOKEN');

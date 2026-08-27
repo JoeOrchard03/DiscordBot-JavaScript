@@ -25,14 +25,23 @@ client.on("interactionCreate", async interaction =>{
     }
 
     //Checks if the command is ping
-    if(interaction.commandName==="ping")
+    if(interaction.commandName === "ping")
     {
         await interaction.reply("Pong! 🏓");
     }
 
-    if(interaction.commandName==="joke")
+    if(interaction.commandName === "joke")
     {
         await interaction.reply(await getJoke());
+    }
+
+    if(interaction.commandName === "weather")
+    {
+        const location = interaction.options.getString("location");
+
+        console.log(location);
+
+        await interaction.reply("You entered: " + location);
     }
 });
 

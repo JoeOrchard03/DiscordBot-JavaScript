@@ -17,6 +17,12 @@ async function getCoordinates(location)
 
     const result = data.results[0];
 
+    //Throws error if the geocoding API is not working or can't be reached
+    if(!response.ok)
+    {
+         throw new Error(`Geocoding API request failed: ${response.status}`);
+    }
+
     return {
         name: result.name,
         latitude: result.latitude,

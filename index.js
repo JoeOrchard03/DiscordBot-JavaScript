@@ -42,17 +42,27 @@ client.on("interactionCreate", async interaction =>{
         //Gets the location from user input
         const location = interaction.options.getString("location");
 
-        //Gets the co-ordinates of the location
-        const coordinates = await getCoordinates(location);
+        try
+        {
+            //Gets the co-ordinates of the location
+            const coordinates = await getCoordinates(location);
 
-        console.log(coordinates);
+            console.log(coordinates);
 
-        //Returns info about the location
-        await interaction.reply(
-            `${coordinates.name}, ${coordinates.region}\n` +
-            `Latitude: ${coordinates.latitude}\n` +
-            `Longitude: ${coordinates.longitude}`
-        );
+            //Returns info about the location
+            await interaction.reply(
+                `${coordinates.name}, ${coordinates.region}\n` +
+                `Latitude: ${coordinates.latitude}\n` +
+                `Longitude: ${coordinates.longitude}`);
+        }
+        catch(error)
+        {
+            console.error(error);
+
+            await interaction.reply(
+            `I couldn't find a location called "${location} :(".`);
+        }
+        
     }
 
 });

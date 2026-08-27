@@ -10,6 +10,11 @@ async function getCoordinates(location)
 
     const data = await response.json();
 
+    if(!data.results || data.results.length === 0)
+    {
+        throw new Error("Location not found");
+    }
+
     const result = data.results[0];
 
     return {

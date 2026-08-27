@@ -12,7 +12,17 @@ const commands = [
     new SlashCommandBuilder()
         .setName('joke')
         .setDescription('Tells a joke :D')
-        .toJSON()
+        .toJSON(),
+    //Command to get weather 
+    new SlashCommandBuilder()
+        .setName('weather')
+        .setDescription('Gets the weather for a location')
+        //.addStringOption gets user input
+        .addStringOption(option => option
+            .setName("location")
+            .setDescription("The location to get the weather for")
+            .setRequired(true))
+        .toJSON(),
 ];
 
 //Creats an object that can work with discords REST API, makes it use the bot's token

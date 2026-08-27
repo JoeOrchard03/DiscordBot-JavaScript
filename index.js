@@ -1,3 +1,5 @@
+require(`dotenv`).config();
+
 const { Client, GatewayIntentBits } = require('discord.js'); //Imports dependencies from Discord.js, client is the connection to discord
 
 //Creates discord client
@@ -14,4 +16,4 @@ client.once('ready', () => {
 });
 
 //Connects using bot's token
-client.login('YOUR_BOT_TOKEN');
+client.login(process.env.DISCORD_TOKEN);

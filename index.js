@@ -42,28 +42,43 @@ client.on("interactionCreate", async interaction =>{
         //Gets the location from user input
         const location = interaction.options.getString("location");
 
+        await interaction.deferReply();
+
         try
         {
             //Gets the co-ordinates of the location
             const coordinates = await getCoordinates(location);
 
-            console.log(coordinates);
-
-            await getWeather(
-                coordinates.latitude,
-                coordinates.longitude
-            );
+            const weather = await getWeather(coordinates.latitude, coordinates.longitude);
 
             //Returns info about the location
-            await interaction.reply(
-                `Weather retrieved for ${coordinates.name}`);
+            await interaction.editReply(
+                `Weather for ${coordinates.name}, ${coordinates.region}\n` +
+                `${weather.weatherDescription}\n` +
+                `Temperature: ${weather.temperature}°C\n` +
+                `Feels like: ${weather.feelsLike}°C\n` +
+                `Precipitation: ${weather.precipitation} mm\n` +
+                `Wind speed: ${weather.windSpeed} km/h`);
         }
         catch(error)
         {
             console.error(error);
 
-            await interaction.reply(
-            `I couldn't find a location called "${location} :(".`);
+            if (error.message === "Location not found")
+            {
+                await interaction.editReply(
+                    `I couldn't find a location called "${location} :(".`);
+            }
+            else if(error.cause?.code === "UND_ERR_CONNECT_TIMEOUT")
+            {
+                await interaction.editReply(
+                    "The weather service took too long to respond. Please try again.");
+            }
+            else
+            {
+                await interaction.editReply(
+                    "Something went wrong while retrieving the weather.");
+            }
         }
         
     }

@@ -2,7 +2,7 @@ require(`dotenv`).config();
 
 //Loads necessary commands from API handler js files
 const {getJoke} = require("./APIs/JokeAPI");
-const { getCoordinates } = require("./APIs/WeatherAPI");
+const { getCoordinates, getWeather } = require("./APIs/WeatherAPI");
 
 const { Client, GatewayIntentBits } = require('discord.js'); //Imports dependencies from Discord.js, client is the connection to discord
 
@@ -49,11 +49,14 @@ client.on("interactionCreate", async interaction =>{
 
             console.log(coordinates);
 
+            await getWeather(
+                coordinates.latitude,
+                coordinates.longitude
+            );
+
             //Returns info about the location
             await interaction.reply(
-                `${coordinates.name}, ${coordinates.region}\n` +
-                `Latitude: ${coordinates.latitude}\n` +
-                `Longitude: ${coordinates.longitude}`);
+                `Weather retrieved for ${coordinates.name}`);
         }
         catch(error)
         {

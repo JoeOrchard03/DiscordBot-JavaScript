@@ -34,12 +34,13 @@ async function getCoordinates(location)
 
 async function getWeather(latitude, longitude)
 {
+    //Sets the url to fetch using the co-ordinates of the location
     const url = 
     `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m`;
     
     const response = await fetch(url);
     
-    //Throws error if the geocoding API is not working or can't be reached
+    //Throws error if the Open-Meteo API is not working or can't be reached
     if(!response.ok)
     {
         throw new Error(`Weather API request failed: ${response.status}`);
@@ -47,6 +48,7 @@ async function getWeather(latitude, longitude)
         
     const data = await response.json();
 
+    //Returns the data we need from the response
     return{
         weatherDescription: getWeatherDescription(data.current.weather_code),
         temperature: data.current.temperature_2m,
@@ -57,6 +59,7 @@ async function getWeather(latitude, longitude)
     };
 }
     
+//Translates Open-Meteo's weather codes into plain text with an emoji for user convenience
 function getWeatherDescription(weatherCode)
 {
     switch(weatherCode)
@@ -151,6 +154,3 @@ function getWeatherDescription(weatherCode)
 }
 
 module.exports = { getCoordinates, getWeather };
-
-//Test
-//getCoordinates("Aylesbury");

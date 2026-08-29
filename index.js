@@ -1,17 +1,15 @@
 require(`dotenv`).config();
 
 //Loads necessary commands from API handler js files
-const {getJoke} = require("./APIs/JokeAPI");
+const { getJoke } = require("./APIs/JokeAPI");
 const { getCoordinates, getWeather } = require("./APIs/WeatherAPI");
 
-const { Client, GatewayIntentBits } = require('discord.js'); //Imports dependencies from Discord.js, client is the connection to discord
+const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js'); //Imports dependencies from Discord.js, client is the connection to discord
 
 //Creates discord client
 const client = new Client({
     intents: [
-        GatewayIntentBits.Guilds
-    ]
-});
+        GatewayIntentBits.Guilds]});
 
 //When bot is connected and ready
 client.once('clientReady', () => {
@@ -46,21 +44,19 @@ client.on("interactionCreate", async interaction =>{
 
         try
         {
-            //Gets the co-ordinates of the location
+            //Gets the co-ordinates of the location using the location's name and a call to Open-Meteo's geocoding API
             const coordinates = await getCoordinates(location);
 
+            //Gets the weather of the location using it's co-ordinates and a call to Open-Meteo's foreceast API
             const weather = await getWeather(coordinates.latitude, coordinates.longitude);
 
-            //Returns info about the location
-            await interaction.editReply(
-                `Weather for ${coordinates.name}, ${coordinates.region}\n` +
-                `${weather.weatherDescription}\n` +
-                `Temperature: ${weather.temperature}°C\n` +
-                `Feels like: ${weather.feelsLike}°C\n` +
-                `Precipitation: ${weather.precipitation} mm\n` +
-                `Wind speed: ${weather.windSpeed} km/h`);
+            //Creates the weather embed and loads the necessary info into it
+            const weatherEmbed = createWeatherEmbed(coordinates, weather);
+
+            //Bot replies with the embed
+            await interaction.editReply({embeds: [weatherEmbed]});
         }
-        catch(error)
+        catch(error) // Error handling
         {
             console.error(error);
 
@@ -84,6 +80,38 @@ client.on("interactionCreate", async interaction =>{
     }
 
 });
+
+//Function to create the weather embed
+function createWeatherEmbed(coordinates, weather)
+{
+    return new EmbedBuilder().
+        setColor(0x3498DB). //Sets blue color
+        setTitle(`Weather for ${coordinates.name}, ${coordinates.region}`).
+        setDescription(weather.weatherDescription).
+        addFields( //Adds fields with emojis for user ease of use
+            {
+                name: "🌡️ Temperature",
+                value: `${weather.temperature}°C`,
+                inline: true
+            },
+            {
+                name: "🤔 Feels like",
+                value: `${weather.feelsLike}°C`,
+                inline: true
+            },
+            {
+                name: "🌧️ Precipitation",
+                value: `${weather.precipitation} mm`,
+                inline: true
+            },
+            {
+                name: "💨 Wind speed",
+                value: `${weather.windSpeed} km/h`,
+                inline: true
+            }).
+        setFooter({text: "Weather and location data provided by Open-Meteo"}). //Credits Open-Meteo
+        setTimestamp();
+}
 
 //Connects using bot's token
 client.login(process.env.DISCORD_TOKEN);

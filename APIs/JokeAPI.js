@@ -5,6 +5,7 @@ async function getJoke() {
 
     const data = await response.json();
 
+    //Convets the data into a string that can be printed by the bot
     const message = `${data.setup}\n${data.punchline}`;
     return message;
 }

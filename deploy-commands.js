@@ -13,7 +13,6 @@ const commands = [
         .setName('joke')
         .setDescription('Tells a joke :D')
         .toJSON(),
-    //Command to get weather 
     new SlashCommandBuilder()
         .setName('weather')
         .setDescription('Gets the weather for a location')
@@ -29,6 +28,7 @@ const commands = [
 const rest = new REST({ version: '10' })
     .setToken(process.env.DISCORD_TOKEN);
 
+//Deploys functions to the bot so it knows what is supposed to do what
 async function deployCommands() {
     try {
         console.log('Registering slash commands...');

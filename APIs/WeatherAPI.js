@@ -6,7 +6,7 @@ async function getCoordinates(location)
 
     const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodedLocation}&count=1`;
 
-    const response = await fetch(url);
+    const response = await fetchWithRetry(url);
 
     //Throws error if the geocoding API is not working or can't be reached
     if(!response.ok)
@@ -38,7 +38,7 @@ async function getWeather(latitude, longitude)
     const url = 
     `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m`;
     
-    const response = await fetch(url);
+    const response = await fetchWithRetry(url);
     
     //Throws error if the Open-Meteo API is not working or can't be reached
     if(!response.ok)
@@ -59,6 +59,25 @@ async function getWeather(latitude, longitude)
     };
 }
     
+async function fetchWithRetry(url, retries = 2)
+{
+    for(let attempt = 0; attempt <= retries; attempt++)
+    {
+        try{
+            return await fetch(url);
+        }
+        catch(error)
+        {
+            if(attempt === retries)
+            {
+                throw error;
+            }
+            
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+    }
+}
+
 //Translates Open-Meteo's weather codes into plain text with an emoji for user convenience
 function getWeatherDescription(weatherCode)
 {

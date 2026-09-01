@@ -7,13 +7,13 @@ I created this project to practise working with external APIs, asynchronous Java
 ## Features
 
 - "/ping"
--   Checks whether the bot is online and responding.
+  - Checks whether the bot is online and responding.
 - "/joke"
--   Retrieves a random joke from the official joke API.
+  - Retrieves a random joke from the official joke API.
 - "/weather location:"
--   Accepts a location entered by the user.
--  Uses the Open-Meteo Geocoding API to convert the location into latitude and longitude co-ordinates.
--  Uses these co-ordinates with the Open-Meteo Forecast API to display the current weather in a Discord embed.
+  - Accepts a location entered by the user.
+  - Uses the Open-Meteo Geocoding API to convert the location into latitude and longitude co-ordinates.
+  - Uses these co-ordinates with the Open-Meteo Forecast API to display the current weather in a Discord embed.
 
 - Handles invalid locations and API/network errors.
 - Retries failed API requests before returning an error to the user.
@@ -70,12 +70,16 @@ This project gave me practical experience with:
 
 1) Clone the repository
 
+```
 git clone https://github.com/JoeOrchard03/DiscordBot-JavaScript
 cd Artificer
+```
 
 2) Install dependencies
 
+```
 npm install
+```
 
 3) Create a .env file
 
@@ -83,11 +87,15 @@ Create a .env file in the root directory with a discord bot token, client ID and
 
 4) Register the slash commands
 
+```
 node deploy-commands.js
+```
 
 5) Start the bot
 
+```
 node index.js
+```
 
 ## Future Development
 

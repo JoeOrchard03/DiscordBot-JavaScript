@@ -3,7 +3,7 @@ require(`dotenv`).config();
 //Loads necessary commands from API handler js files
 const { getJoke } = require("./APIs/JokeAPI");
 const { getCoordinates, getWeather } = require("./APIs/WeatherAPI");
-const { getTarkovItem } = require ("./APIs/TarkovAPI");
+const { getInventory } = require ("./Database/Database");
 
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js'); //Imports dependencies from Discord.js, client is the connection to discord
 
@@ -78,6 +78,13 @@ client.on("interactionCreate", async interaction =>{
             }
         }
         
+    }
+
+    if (interaction.commandName === "inventory")
+    {
+        const inventory = getInventory(interaction.user.id);
+
+        console.log(inventory);
     }
 
 });

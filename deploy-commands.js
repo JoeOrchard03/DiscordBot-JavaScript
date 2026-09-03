@@ -22,6 +22,9 @@ const commands = [
             .setDescription("The location to get the weather for")
             .setRequired(true))
         .toJSON(),
+    new SlashCommandBuilder()
+        .setName('inventory')
+        .setDescription('View your Tarkov inventory')
 ];
 
 //Creats an object that can work with discords REST API, makes it use the bot's token

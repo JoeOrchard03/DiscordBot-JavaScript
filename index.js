@@ -3,6 +3,7 @@ require(`dotenv`).config();
 //Loads necessary commands from API handler js files
 const { getJoke } = require("./APIs/JokeAPI");
 const { getCoordinates, getWeather } = require("./APIs/WeatherAPI");
+const { getTarkovItem } = require ("./APIs/TarkovAPI");
 
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js'); //Imports dependencies from Discord.js, client is the connection to discord
 

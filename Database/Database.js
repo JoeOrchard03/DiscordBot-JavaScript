@@ -76,6 +76,29 @@ function addItemQuantity(discordUserID, itemID, amount)
     return updateInventoryQuantity.run(amount, discordUserID, itemID);
 }
 
+function getInventory(discordUserID)
+{
+    //Gets inventory and joins inventory to items using matching item IDs so item names can be returned
+    const getInventory = database.prepare(`
+        SELECT items.name, items.short_name, inventory.quantity
+        FROM inventory
+        JOIN items
+        ON inventory.item_id = items.item_id 
+        WHERE inventory.discord_user_id = ?`);
+
+    return getInventory.all(discordUserID);
+}
+
+function deleteInventoryItem(discordUserID, itemID)
+{
+    const removeInventoryItem = database.prepare(`
+        DELETE FROM inventory
+        WHERE discord_user_id = ?
+        AND item_id = ?`);
+
+    return removeInventoryItem.run(discordUserID, itemID);
+}
+
 //Runs SQL against the database and creates table to store user name info if one does not already exist
 database.exec(`
     CREATE TABLE IF NOT EXISTS users (
@@ -100,48 +123,5 @@ database.exec(`
             REFERENCES users(discord_user_id),
         FOREIGN KEY (item_id)
             REFERENCES items(item_id))`);
-        
-addUser("12345", "Joe");
 
-const user = getUser("12345");
-
-console.log(user);
-
-addItem(
-    "5c06779c86f77426e00dd782",
-    "Wires",
-    "Wires");
-
-const item = getItem("5c06779c86f77426e00dd782");
-
-console.log(item);
-
-addInventoryItem(
-    "12345",
-    "5c06779c86f77426e00dd782",
-    7
-);
-
-const inventoryItem = getInventoryItem(
-    "12345",
-    "5c06779c86f77426e00dd782"
-);
-
-console.log(inventoryItem);
-
-addItemQuantity(
-    "12345",
-    "5c06779c86f77426e00dd782",
-    2
-)
-
-const updatedInventoryItem = getInventoryItem(
-    "12345",
-    "5c06779c86f77426e00dd782"
-);
-
-console.log(updatedInventoryItem);
-
-console.log("Database connected");
-
-module.exports = {addUser, getUser, addItem, getItem, addInventoryItem, getInventoryItem, addItemQuantity};
+module.exports = {addUser, getUser, addItem, getItem, addInventoryItem, getInventoryItem, addItemQuantity, getInventory, deleteInventoryItem};

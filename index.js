@@ -3,7 +3,7 @@ require(`dotenv`).config();
 //Loads necessary commands from API handler js files
 const { getJoke } = require("./APIs/JokeAPI");
 const { getCoordinates, getWeather } = require("./APIs/WeatherAPI");
-const { getInventory } = require ("./Database/Database");
+const { getInventory, addUser, getUser } = require ("./Database/Database");
 
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js'); //Imports dependencies from Discord.js, client is the connection to discord
 
@@ -85,6 +85,19 @@ client.on("interactionCreate", async interaction =>{
         const inventory = getInventory(interaction.user.id);
 
         console.log(inventory);
+    }
+
+    if(interaction.commandName === "register")
+    {
+        const tarkovUsername = interaction.options.getString("tarkov_name");
+
+        const discordUser = interaction.user.id;
+
+        addUser(discordUser, tarkovUsername);
+
+        console.log(getUser(interaction.user.id));
+
+        await interaction.reply(`User ${discordUser} has been linked with Tarkov account ${tarkovUsername}`);
     }
 
 });

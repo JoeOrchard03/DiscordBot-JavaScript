@@ -24,7 +24,14 @@ const commands = [
         .toJSON(),
     new SlashCommandBuilder()
         .setName('inventory')
-        .setDescription('View your Tarkov inventory')
+        .setDescription('View your Tarkov inventory'),
+    new SlashCommandBuilder()
+        .setName("register")
+        .setDescription("Register your Tarkov Account with Artificer")
+        .addStringOption(option => option
+            .setName("tarkov_name")
+            .setDescription("Your Tarkov usernmame")
+            .setRequired(true))
 ];
 
 //Creats an object that can work with discords REST API, makes it use the bot's token

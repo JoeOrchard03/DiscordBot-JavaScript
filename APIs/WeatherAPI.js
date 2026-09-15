@@ -172,4 +172,4 @@ function getWeatherDescription(weatherCode)
     }
 }
 
-module.exports = { getCoordinates, getWeather };
+module.exports = { getCoordinates, getWeather, fetchWithRetry };

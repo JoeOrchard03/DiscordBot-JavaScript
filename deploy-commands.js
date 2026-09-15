@@ -31,6 +31,17 @@ const commands = [
         .addStringOption(option => option
             .setName("tarkov_name")
             .setDescription("Your Tarkov usernmame")
+            .setRequired(true)),
+    new SlashCommandBuilder()
+        .setName("additem")
+        .setDescription("Add an item to your tarkov inventory")
+        .addStringOption(option => option
+            .setName("item")
+            .setDescription("The tarkov item to add")
+            .setRequired(true))
+        .addIntegerOption(option => option
+            .setName("quantity")
+            .setDescription("The quantity to add")
             .setRequired(true))
 ];
 

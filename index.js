@@ -100,6 +100,13 @@ client.on("interactionCreate", async interaction =>{
         await interaction.reply(`User ${discordUser} has been linked with Tarkov account ${tarkovUsername}`);
     }
 
+    if (interaction.commandName === "additem")
+    {
+        const item = interaction.options.getString("item");
+
+        const quantity = interaction.options.getInteger("quantity");
+    }
+
 });
 
 //Function to create the weather embed

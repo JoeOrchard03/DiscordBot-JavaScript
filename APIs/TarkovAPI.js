@@ -1,34 +1,24 @@
-const tarkovAPIURL = "https://api.tarkov.dev/graphql";
+const tarkovItemsURL = "https://json.tarkov.dev/regular/items"; //Tarkov. dev GraphQL API is down going to use backup json which should have the needed info
+const { fetchWithRetry } = require("./APIs/WeatherAPI");
 
-async function getTarkovItem(itemName)
+async function getTarkovItems()
 {
-    //Creates a query object that provides the itemName of the wanted item and tells it what I want back 
-    const query = `
-        query{                                                                 
-            items(name: "${itemName}") {
-            id
-            name
-            shortName
-        }
-    }`;
+    const url = tarkovItemsURL;
 
-    const response = await fetch(tarkovAPIURL, {method: "POST", //POST sends data to the API
+    const response = fetch(url);
 
-        //Tells the server I am sending JSON
-        headers: {
-            "Content-Type": "application/json"
-        },
-
-        //Turns the query to json so it can be sent via HTTP
-        body: JSON.stringify({query})
-    });
+    //Throws error if the Tarkov.Dev json url is not working or can't be reached
+    if(!response.ok)
+    {
+        throw new Error(`Tarkov.dev json fetch request failed: ${response.status}`);
+    }
 
     const data = await response.json();
 
-    console.log(`Retrieved data from Tarkov POST request`);
-    console.log(data);
+    //Returns the data we need from the response
+    return(data[0]);
 }
 
-getTarkovItem("Wires");
+console.log(getTarkovItems());
 
-module.exports = { getTarkovItem };
+module.exports = { getTarkovItems };
